@@ -1,0 +1,205 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import os
+import requests
+import random
+from uuid import uuid4
+id = '851605338'
+
+tok = input("Enter Token : ")
+os.system("clear")
+us=[]
+def check_username(user):
+	headers = {
+	            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Android 10; Pixel 3 Build/QKQ1.200308.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/125.0.6394.70 Mobile Safari/537.36 trill_350402 JsSdk/1.0 NetType/MOBILE Channel/googleplay AppName/trill app_version/35.3.1 ByteLocale/en ByteFullLocale/en Region/IN AppId/1180 Spark/1.5.9.1 AppVersion/35.3.1 BytedanceWebview/d8a21c6",
+	            }
+	try:
+		g = requests.get(f'https://www.tiktok.com/@{user}', headers=headers).text
+	except:
+		pass
+	try:
+		inf = str(g.split('webapp.user-detail"')[1]).split('"RecommendUserList"')[0]
+		ud = str(inf.split('id":"')[1]).split('",')[0]
+		print(f'\033[1;31mBad Username: {user}')
+	except:
+		headers = {
+		    'x-tt-req-timeout': '90000',
+		    # 'accept-encoding': 'gzip',
+		    'sdk-version': '2',
+		    'x-tt-token': '0310529fc74da4153f0359260e3df7b1fb02147132e821754bd204bb1cd9f9207b6befe9a75e6480ad681e747cc239478c0e10751e7d4b37ae3d987c9c57ee3d3508136675ca4e976249b605d1ad9e7697c0c6e0b9a6f44ef82ad8fa67800f9edae6e-CkAxY2Y5MDFhM2NhY2ZmMTUyMjEyMzU3ZjU3OTA1YjIzMzJiNzFiZDIzN2I3Y2VlNGFkNmIxN2IyZGZhZTA2NWFl-2.0.0',
+		    'user-agent': 'com.zhiliaoapp.musically.go/330802 (Linux; U; Android 13; ar_IQ_#u-nu-latn; ANY-LX2; Build/HONORANY-L22CQ;tt-ok/3.12.13.2-alpha.68-quictest)',
+		}
+		try:
+			r = requests.get(
+			    f'https://api16-normal-c-alisg.tiktokv.com/aweme/v1/unique/id/check/?unique_id={user}&request_tag_from=h5&manifest_version_code=330802&_rticket=1729091680647&app_language=ar&app_type=normal&iid=7354462857339733766&channel=googleplay&device_type=ANY-LX2&language=ar&host_abi=arm64-v8a&locale=ar&resolution=1080*2298&openudid=f13c94806c6f87d8&update_version_code=330802&ac2=wifi&cdid=47cb4dd5-3122-49cc-8294-f9d79be94d13&sys_region=IQ&os_api=33&timezone_name=Asia%2FBaghdad&dpi=480&carrier_region=IQ&ac=wifi&device_id=7116197109661091333&os_version=13&timezone_offset=10800&version_code=330802&app_name=musically_go&ab_version=33.8.2&version_name=33.8.2&device_brand=HONOR&op_region=IQ&ssmix=a&device_platform=android&build_number=33.8.2&region=IQ&aid=1340&ts=1729090772',
+			    cookies=None,
+			    headers=headers,
+			)
+		except:
+			pass
+		if '"is_valid":true' in r.text:
+			print(f'\033[2;32mGood Username: {user}')
+			us.append(f'Good Username: {user}')
+			use=f"""
+UserName TikTok Type | Four
+════════════════════
+UserName : {user}
+════════════════════
+By : @P_W_7
+"""
+			print(use)
+			try:
+				requests.post(f"https://api.telegram.org/bot{tok}/sendMessage?chat_id={id}&text="+str(use))
+			except:pass
+		elif '"is_valid":false' in r.text:
+			print(f'\033[1;31mBad Username: {user}')
+			print('\033[1;33m'+r.json()['status_msg'])
+		else:
+			print(f'\033[1;33m'+r.text)
+
+				
+def generate_username():
+	while True:
+		user= "".join(random.choice('1234567890qwertyuiopasdfghjklzxcvbnm')for i in range(4))
+		try:
+			int(user)
+		except:
+			check_username(user)		
+
+import threading
+threads = []
+for i in range(5):
+	t = threading.Thread(target=generate_username)
+	threads.append(t)
+	t.start()
+for t in threads:
+	t.join()	
